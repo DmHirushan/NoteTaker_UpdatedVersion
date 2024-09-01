@@ -1,9 +1,6 @@
 package lk.ijse.gdse.aad68.notetaker.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,5 +25,6 @@ public class UserEntity implements SuperEntity {
     private String password;
     @Column(columnDefinition = "LONGTEXT")
     private String profilePic;
+    @OneToMany(mappedBy = "user")
     private List<NoteEntity> notes;
 }
