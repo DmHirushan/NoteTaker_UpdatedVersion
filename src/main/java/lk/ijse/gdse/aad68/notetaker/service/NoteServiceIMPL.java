@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -30,8 +31,17 @@ public  class NoteServiceIMPL implements NoteService {
     }
 
     @Override
-    public void updateNote(String noteId, NoteDTO incomeNoteDTO) {
-
+    public boolean updateNote(String noteId, NoteDTO incomeNoteDTO) {
+        Optional<NoteEntity> tmpNoteEntityById = noteDao.findById(noteId);
+        if (!tmpNoteEntityById.isPresent()){
+            return false;
+        }else {
+            tmpNoteEntityById.get().setNoteDesc(incomeNoteDTO.getNoteDesc());
+            tmpNoteEntityById.get().setCreateDate(incomeNoteDTO.getCreateDate());
+            tmpNoteEntityById.get().setNoteTitle(incomeNoteDTO.getNoteTitle());
+            tmpNoteEntityById.get().setPriorityLevel(incomeNoteDTO.getPriorityLevel());
+            return true;
+        }
     }
 
     @Override
