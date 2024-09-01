@@ -32,15 +32,21 @@ public class NoteController {
     public List<NoteDTO> getAllNotes(){
         return noteService.getAllNotes();
     }
+
+
     @GetMapping(value = "/{noteId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public NoteDTO getNote(@PathVariable ("noteId") String noteId)  {
         return noteService.getSelectedNote(noteId);
     }
+
+
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping(value = "/{noteId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public void updateNote(@PathVariable ("noteId") String noteId, @RequestBody NoteDTO note) {
          noteService.updateNote(noteId, note);
     }
+
+
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value ="/{noteId}" )
     public void deleteNote(@PathVariable ("noteId") String noteId) {
