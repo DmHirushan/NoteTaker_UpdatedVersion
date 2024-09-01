@@ -17,12 +17,14 @@ import java.util.List;
 public class NoteController {
     @Autowired
     private final NoteService noteService;
-   //Todo: CRUD of the note
 
+    @GetMapping("/healthcheck")
+    public String healthCheck(){
+        return "Note Taker is running!";
+    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createNote(@RequestBody NoteDTO note) {
-        //Todo: Handle with Service
         var saveData = noteService.saveNote(note);
         return ResponseEntity.ok(saveData);
     }
