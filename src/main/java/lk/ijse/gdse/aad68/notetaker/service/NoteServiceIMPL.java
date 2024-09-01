@@ -32,12 +32,11 @@ public  class NoteServiceIMPL implements NoteService {
     @Override
     public void updateNote(String noteId, NoteDTO incomeNoteDTO) {
 
-
     }
 
     @Override
     public void deleteNote(String noteId) {
-
+        noteDao.deleteById(noteId);
 
     }
 
