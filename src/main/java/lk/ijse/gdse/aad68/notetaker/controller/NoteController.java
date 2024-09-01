@@ -27,7 +27,6 @@ public class NoteController {
         return ResponseEntity.ok(saveData);
     }
 
-
     @GetMapping(value = "allnotes", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<NoteDTO> getAllNotes(){
         return noteService.getAllNotes();
