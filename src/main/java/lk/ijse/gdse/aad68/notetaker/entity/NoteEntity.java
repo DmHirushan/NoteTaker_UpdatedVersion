@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Data
 @Table(name = "notes")
 @Entity
-public class NoteEntity implements Serializable {
+public class NoteEntity implements SuperEntity {
     @Id
     private String noteId;
     private String noteTitle;
