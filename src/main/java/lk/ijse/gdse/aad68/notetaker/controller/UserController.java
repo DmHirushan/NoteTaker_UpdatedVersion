@@ -4,9 +4,9 @@ import lk.ijse.gdse.aad68.notetaker.dto.UserDto;
 import lk.ijse.gdse.aad68.notetaker.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/user")
@@ -20,8 +20,13 @@ public class UserController {
         return "User Controller running!";
     }
 
-    @GetMapping
-    public String saveUser(UserDto userDto){
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> saveUser(@RequestPart("firstName") String firstName,
+                                           @RequestPart("lastName") String lastName,
+                                           @RequestPart("email") String email,
+                                           @RequestPart("password") String password,
+                                           @RequestPart("profilePic") String profilePic){
+        //Handle profile pic
         return null;
     }
 
