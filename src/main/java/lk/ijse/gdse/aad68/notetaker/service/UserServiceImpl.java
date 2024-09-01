@@ -6,6 +6,7 @@ import lk.ijse.gdse.aad68.notetaker.dto.NoteDTO;
 import lk.ijse.gdse.aad68.notetaker.dto.UserDto;
 import lk.ijse.gdse.aad68.notetaker.util.AppUtil;
 import lk.ijse.gdse.aad68.notetaker.util.Mapping;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,13 +14,14 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
 
     @Autowired
-    private Mapping mapping;
+    private final Mapping mapping;
     @Override
     public String saveUser(UserDto userDto) {
         userDto.setUserId(AppUtil.createUserId());

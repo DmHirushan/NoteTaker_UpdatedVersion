@@ -5,6 +5,7 @@ import lk.ijse.gdse.aad68.notetaker.service.UserService;
 import lk.ijse.gdse.aad68.notetaker.util.AppUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,8 +38,8 @@ public class UserController {
         buildUserDto.setProfilePic(profilePic);
 
         // send to the service layer
-        userService.saveUser(buildUserDto);
-        return null;
+        return new ResponseEntity<>(userService.saveUser(buildUserDto), HttpStatus.CREATED);
+
     }
 
 }

@@ -22,13 +22,13 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
         return new String[]{"/"};
     }
 
-    @Override
-    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
-        registration.setMultipartConfig(new MultipartConfigElement("/tmp"));
-    }
-
+//    @Override
 //    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
-//        String tempDir = System.getProperty("java.io.tmpdir");
-//        registration.setMultipartConfig(new MultipartConfigElement(tempDir));
+//        registration.setMultipartConfig(new MultipartConfigElement("/tmp"));
 //    }
+
+    protected void customizeRegistration(ServletRegistration.Dynamic registration) {
+        String tempDir = System.getProperty("java.io.tmpdir");
+        registration.setMultipartConfig(new MultipartConfigElement(tempDir));
+    }
 }
