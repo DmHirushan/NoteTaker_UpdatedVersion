@@ -2,6 +2,7 @@ package lk.ijse.gdse.aad68.notetaker.controller;
 
 import lk.ijse.gdse.aad68.notetaker.dto.UserDto;
 import lk.ijse.gdse.aad68.notetaker.service.UserService;
+import lk.ijse.gdse.aad68.notetaker.util.AppUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -27,6 +28,16 @@ public class UserController {
                                            @RequestPart("password") String password,
                                            @RequestPart("profilePic") String profilePic){
         //Handle profile pic
+        var base64ProfilePic = AppUtil.toBase64ProfilePic(profilePic);
+        var buildUserDto = new UserDto();
+        buildUserDto.setFirstName(firstName);
+        buildUserDto.setLastName(lastName);
+        buildUserDto.setEmail(email);
+        buildUserDto.setPassword(password);
+        buildUserDto.setProfilePic(profilePic);
+
+        // send to the service layer
+        userService.saveUser(buildUserDto);
         return null;
     }
 
