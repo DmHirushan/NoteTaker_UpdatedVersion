@@ -1,10 +1,14 @@
 package lk.ijse.gdse.aad68.notetaker.service;
 
+import jakarta.transaction.Transactional;
 import lk.ijse.gdse.aad68.notetaker.dto.NoteDTO;
 import lk.ijse.gdse.aad68.notetaker.dto.UserDto;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
+@Transactional
 public class UserServiceImpl implements UserService {
     @Override
     public String saveUser(UserDto userDto) {
