@@ -1,5 +1,6 @@
 package lk.ijse.gdse.aad68.notetaker.controller;
 
+import lk.ijse.gdse.aad68.notetaker.dto.NoteDTO;
 import lk.ijse.gdse.aad68.notetaker.dto.UserDto;
 import lk.ijse.gdse.aad68.notetaker.service.UserService;
 import lk.ijse.gdse.aad68.notetaker.util.AppUtil;
@@ -29,7 +30,7 @@ public class UserController {
                                            @RequestPart("password") String password,
                                            @RequestPart("profilePic") String profilePic){
         //Handle profile pic
-        var base64ProfilePic = AppUtil.toBase64ProfilePic(profilePic);
+        String base64ProfilePic = AppUtil.toBase64ProfilePic(profilePic);
         var buildUserDto = new UserDto();
         buildUserDto.setFirstName(firstName);
         buildUserDto.setLastName(lastName);
@@ -45,6 +46,11 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable ("userId") String userId){
         return userService.deleteUser(userId) ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserDto getSelectedUser(@PathVariable ("userId") String userId){
+        return userService.getSelectedUser(userId);
     }
 
 }

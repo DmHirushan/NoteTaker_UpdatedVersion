@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lk.ijse.gdse.aad68.notetaker.dao.UserDao;
 import lk.ijse.gdse.aad68.notetaker.dto.NoteDTO;
 import lk.ijse.gdse.aad68.notetaker.dto.UserDto;
+import lk.ijse.gdse.aad68.notetaker.entity.UserEntity;
 import lk.ijse.gdse.aad68.notetaker.util.AppUtil;
 import lk.ijse.gdse.aad68.notetaker.util.Mapping;
 import lombok.RequiredArgsConstructor;
@@ -44,12 +45,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public NoteDTO getSelectedUser(String userId) {
-        return null;
+    public UserDto getSelectedUser(String userId) {
+        return mapping.convertToUserDTO(userDao.getUserEntityByUserId(userId));
     }
 
     @Override
-    public List<NoteDTO> getAllUsers() {
+    public List<UserDto> getAllUsers() {
         return null;
     }
 }

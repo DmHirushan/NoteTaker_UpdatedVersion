@@ -28,7 +28,7 @@ public class Mapping {
     }
 
     //user matters mapping
-    public UserDto convertToDTO(UserEntity userEntity){
+    public UserDto convertToUserDTO(UserEntity userEntity){
         return modelMapper.map(userEntity, UserDto.class);
     }
 
@@ -36,7 +36,7 @@ public class Mapping {
         return modelMapper.map(userDto, UserEntity.class);
     }
 
-    public List<UserDto> convertToUserDTO(List<UserEntity> users) {
+    public List<UserDto> convertToUserDTOS(List<UserEntity> users) {
         return modelMapper.map(users, List.class);
     }
 
