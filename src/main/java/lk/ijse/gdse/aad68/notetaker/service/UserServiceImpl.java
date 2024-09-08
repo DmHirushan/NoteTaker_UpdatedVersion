@@ -5,6 +5,7 @@ import lk.ijse.gdse.aad68.notetaker.dao.UserDao;
 import lk.ijse.gdse.aad68.notetaker.dto.NoteDTO;
 import lk.ijse.gdse.aad68.notetaker.dto.UserDto;
 import lk.ijse.gdse.aad68.notetaker.entity.UserEntity;
+import lk.ijse.gdse.aad68.notetaker.exception.UserNotFoundException;
 import lk.ijse.gdse.aad68.notetaker.util.AppUtil;
 import lk.ijse.gdse.aad68.notetaker.util.Mapping;
 import lombok.RequiredArgsConstructor;
@@ -36,10 +37,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateUser(UserDto userDto) {
+    public void updateUser(UserDto userDto) {
         Optional<UserEntity> tmpUser = userDao.findById(userDto.getUserId());
         if (!tmpUser.isPresent()){
-            return false;
+            throw new UserNotFoundException("User Not Found!");
         }else {
             tmpUser.get().setFirstName(userDto.getFirstName());
             tmpUser.get().setEmail(userDto.getEmail());
@@ -47,7 +48,6 @@ public class UserServiceImpl implements UserService {
             tmpUser.get().setPassword(userDto.getPassword());
             tmpUser.get().setProfilePic(userDto.getProfilePic());
         }
-        return true;
     }
 
     @Override

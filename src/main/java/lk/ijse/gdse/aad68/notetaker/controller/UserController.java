@@ -2,6 +2,7 @@ package lk.ijse.gdse.aad68.notetaker.controller;
 
 import lk.ijse.gdse.aad68.notetaker.dto.NoteDTO;
 import lk.ijse.gdse.aad68.notetaker.dto.UserDto;
+import lk.ijse.gdse.aad68.notetaker.exception.UserNotFoundException;
 import lk.ijse.gdse.aad68.notetaker.service.UserService;
 import lk.ijse.gdse.aad68.notetaker.util.AppUtil;
 import lombok.RequiredArgsConstructor;
@@ -68,7 +69,7 @@ public class UserController {
     }
 
     @PatchMapping(value = "/{userId}", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> updateUser(@PathVariable ("userId") String userId,
+    public ResponseEntity<Void> updateUser(@PathVariable ("userId") String userId,
                                              @RequestPart("firstName") String updateFirstName,
                                              @RequestPart("lastName") String updateLastName,
                                              @RequestPart("email") String updateEmail,
@@ -76,18 +77,24 @@ public class UserController {
                                              @RequestPart("profilePic") String updateProfilePic
                                              ){
 
-        String updateBase64ProfilePic = AppUtil.toBase64ProfilePic(updateProfilePic);
-        var updateUser = new UserDto();
-        updateUser.setUserId(userId);
-        updateUser.setEmail(updateEmail);
-        updateUser.setFirstName(updateFirstName);
-        updateUser.setLastName(updateLastName);
-        updateUser.setPassword(updatePassword);
-        updateUser.setProfilePic(updateBase64ProfilePic);
+        try {
+            String updateBase64ProfilePic = AppUtil.toBase64ProfilePic(updateProfilePic);
+            var updateUser = new UserDto();
+            updateUser.setUserId(userId);
+            updateUser.setEmail(updateEmail);
+            updateUser.setFirstName(updateFirstName);
+            updateUser.setLastName(updateLastName);
+            updateUser.setPassword(updatePassword);
+            updateUser.setProfilePic(updateBase64ProfilePic);
 
+            userService.updateUser(updateUser);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }catch (UserNotFoundException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-
-        return userService.updateUser(updateUser) ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 }
