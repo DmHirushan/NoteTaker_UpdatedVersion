@@ -11,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/user")
 @RequiredArgsConstructor
@@ -51,6 +53,11 @@ public class UserController {
     @GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserDto getSelectedUser(@PathVariable ("userId") String userId){
         return userService.getSelectedUser(userId);
+    }
+
+    @GetMapping(value = "/getall", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<UserDto> getAllUsers(){
+        return userService.getAllUsers();
     }
 
 }
