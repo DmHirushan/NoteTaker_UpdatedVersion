@@ -41,7 +41,14 @@ public class UserController {
         buildUserDto.setProfilePic(base64ProfilePic);
 
         // send to the service layer
-        return new ResponseEntity<>(userService.saveUser(buildUserDto), HttpStatus.CREATED);
+//        return new ResponseEntity<>(userService.saveUser(buildUserDto), HttpStatus.CREATED);
+
+        String saveStatus = userService.saveUser(buildUserDto);
+        if (saveStatus.contains("User saved successfully")){
+            return new ResponseEntity<>(saveStatus, HttpStatus.CREATED);
+        }else {
+            return new ResponseEntity<>(saveStatus, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
     }
 
@@ -77,6 +84,8 @@ public class UserController {
         updateUser.setLastName(updateLastName);
         updateUser.setPassword(updatePassword);
         updateUser.setProfilePic(updateBase64ProfilePic);
+
+
 
         return userService.updateUser(updateUser) ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
