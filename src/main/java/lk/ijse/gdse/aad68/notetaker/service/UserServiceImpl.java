@@ -1,9 +1,10 @@
 package lk.ijse.gdse.aad68.notetaker.service;
 
 import jakarta.transaction.Transactional;
+import lk.ijse.gdse.aad68.notetaker.customObj.UserErrorResponse;
+import lk.ijse.gdse.aad68.notetaker.customObj.UserResponse;
 import lk.ijse.gdse.aad68.notetaker.dao.UserDao;
-import lk.ijse.gdse.aad68.notetaker.dto.NoteDTO;
-import lk.ijse.gdse.aad68.notetaker.dto.UserDto;
+import lk.ijse.gdse.aad68.notetaker.dto.impl.UserDto;
 import lk.ijse.gdse.aad68.notetaker.entity.UserEntity;
 import lk.ijse.gdse.aad68.notetaker.exception.UserNotFoundException;
 import lk.ijse.gdse.aad68.notetaker.util.AppUtil;
@@ -60,8 +61,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getSelectedUser(String userId) {
-        return mapping.convertToUserDTO(userDao.getUserEntityByUserId(userId));
+    public UserResponse getSelectedUser(String userId) {
+        if (userDao.existsById(userId)){
+            return mapping.convertToUserDTO(userDao.getUserEntityByUserId(userId));
+        }else {
+            return new UserErrorResponse(0, "User Not Found");
+        }
     }
 
     @Override

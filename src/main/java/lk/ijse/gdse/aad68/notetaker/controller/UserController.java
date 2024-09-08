@@ -1,7 +1,7 @@
 package lk.ijse.gdse.aad68.notetaker.controller;
 
-import lk.ijse.gdse.aad68.notetaker.dto.NoteDTO;
-import lk.ijse.gdse.aad68.notetaker.dto.UserDto;
+import lk.ijse.gdse.aad68.notetaker.customObj.UserResponse;
+import lk.ijse.gdse.aad68.notetaker.dto.impl.UserDto;
 import lk.ijse.gdse.aad68.notetaker.exception.UserNotFoundException;
 import lk.ijse.gdse.aad68.notetaker.service.UserService;
 import lk.ijse.gdse.aad68.notetaker.util.AppUtil;
@@ -59,7 +59,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserDto getSelectedUser(@PathVariable ("userId") String userId){
+    public UserResponse getSelectedUser(@PathVariable ("userId") String userId){
         return userService.getSelectedUser(userId);
     }
 
