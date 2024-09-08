@@ -38,7 +38,7 @@ public class UserController {
         buildUserDto.setLastName(lastName);
         buildUserDto.setEmail(email);
         buildUserDto.setPassword(password);
-        buildUserDto.setProfilePic(profilePic);
+        buildUserDto.setProfilePic(base64ProfilePic);
 
         // send to the service layer
         return new ResponseEntity<>(userService.saveUser(buildUserDto), HttpStatus.CREATED);
@@ -55,9 +55,30 @@ public class UserController {
         return userService.getSelectedUser(userId);
     }
 
-    @GetMapping(value = "/getall", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<UserDto> getAllUsers(){
         return userService.getAllUsers();
+    }
+
+    @PatchMapping(value = "/{userId}", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> updateUser(@PathVariable ("userId") String userId,
+                                             @RequestPart("firstName") String updateFirstName,
+                                             @RequestPart("lastName") String updateLastName,
+                                             @RequestPart("email") String updateEmail,
+                                             @RequestPart("password") String updatePassword,
+                                             @RequestPart("profilePic") String updateProfilePic
+                                             ){
+
+        String updateBase64ProfilePic = AppUtil.toBase64ProfilePic(updateProfilePic);
+        var updateUser = new UserDto();
+        updateUser.setUserId(userId);
+        updateUser.setEmail(updateEmail);
+        updateUser.setFirstName(updateFirstName);
+        updateUser.setLastName(updateLastName);
+        updateUser.setPassword(updatePassword);
+        updateUser.setProfilePic(updateBase64ProfilePic);
+
+        return userService.updateUser(updateUser) ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 }

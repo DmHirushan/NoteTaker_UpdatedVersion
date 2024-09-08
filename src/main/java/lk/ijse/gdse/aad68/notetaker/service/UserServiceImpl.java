@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -31,8 +32,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updateUser(String userId, UserDto userDto) {
-        return false;
+    public boolean updateUser(UserDto userDto) {
+        Optional<UserEntity> tmpUser = userDao.findById(userDto.getUserId());
+        if (!tmpUser.isPresent()){
+            return false;
+        }else {
+            tmpUser.get().setFirstName(userDto.getFirstName());
+            tmpUser.get().setEmail(userDto.getEmail());
+            tmpUser.get().setLastName(userDto.getLastName());
+            tmpUser.get().setPassword(userDto.getPassword());
+            tmpUser.get().setProfilePic(userDto.getProfilePic());
+        }
+        return true;
     }
 
     @Override
