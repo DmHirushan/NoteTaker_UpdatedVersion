@@ -6,9 +6,9 @@ import lk.ijse.gdse.aad68.notetaker.dto.impl.UserDto;
 import java.util.List;
 
 public interface UserService {
-    String saveUser(UserDto userDto);
+    void saveUser(UserDto userDto);
     void updateUser(UserDto userDto);
-    boolean deleteUser(String userId);
+    void deleteUser(String userId);
     UserResponse getSelectedUser(String userId);
     List<UserDto> getAllUsers();
 }

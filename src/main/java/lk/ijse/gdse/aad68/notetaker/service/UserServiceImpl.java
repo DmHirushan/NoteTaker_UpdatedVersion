@@ -6,6 +6,7 @@ import lk.ijse.gdse.aad68.notetaker.customObj.UserResponse;
 import lk.ijse.gdse.aad68.notetaker.dao.UserDao;
 import lk.ijse.gdse.aad68.notetaker.dto.impl.UserDto;
 import lk.ijse.gdse.aad68.notetaker.entity.UserEntity;
+import lk.ijse.gdse.aad68.notetaker.exception.DataPersistFailedException;
 import lk.ijse.gdse.aad68.notetaker.exception.UserNotFoundException;
 import lk.ijse.gdse.aad68.notetaker.util.AppUtil;
 import lk.ijse.gdse.aad68.notetaker.util.Mapping;
@@ -27,13 +28,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private final Mapping mapping;
     @Override
-    public String saveUser(UserDto userDto) {
+    public void saveUser(UserDto userDto) {
         userDto.setUserId(AppUtil.createUserId());
         UserEntity savedUser = userDao.save(mapping.convertToEntity(userDto));
-        if (savedUser != null && savedUser.getUserId() != null){
-            return "User saved successfully!";
-        }else {
-            return "Save Failed!";
+        if (savedUser == null && savedUser.getUserId() == null) {
+            throw new DataPersistFailedException("Can't save the user!");
         }
     }
 
@@ -52,12 +51,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean deleteUser(String userId) {
-        if (userDao.existsById(userId)){
+    public void deleteUser(String userId) {
+        Optional <UserEntity> selectedUserId = userDao.findById(userId);
+
+        if (!selectedUserId.isPresent()){
+            throw new UserNotFoundException("User Not Found!");
+        }else {
             userDao.deleteById(userId);
-            return true;
         }
-        return false;
     }
 
     @Override

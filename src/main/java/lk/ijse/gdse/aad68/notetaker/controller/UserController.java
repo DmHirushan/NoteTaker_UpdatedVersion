@@ -2,6 +2,7 @@ package lk.ijse.gdse.aad68.notetaker.controller;
 
 import lk.ijse.gdse.aad68.notetaker.customObj.UserResponse;
 import lk.ijse.gdse.aad68.notetaker.dto.impl.UserDto;
+import lk.ijse.gdse.aad68.notetaker.exception.DataPersistFailedException;
 import lk.ijse.gdse.aad68.notetaker.exception.UserNotFoundException;
 import lk.ijse.gdse.aad68.notetaker.service.UserService;
 import lk.ijse.gdse.aad68.notetaker.util.AppUtil;
@@ -32,6 +33,8 @@ public class UserController {
                                            @RequestPart("email") String email,
                                            @RequestPart("password") String password,
                                            @RequestPart("profilePic") String profilePic){
+
+        try{
         //Handle profile pic
         String base64ProfilePic = AppUtil.toBase64ProfilePic(profilePic);
         var buildUserDto = new UserDto();
@@ -41,21 +44,26 @@ public class UserController {
         buildUserDto.setPassword(password);
         buildUserDto.setProfilePic(base64ProfilePic);
 
-        // send to the service layer
-//        return new ResponseEntity<>(userService.saveUser(buildUserDto), HttpStatus.CREATED);
-
-        String saveStatus = userService.saveUser(buildUserDto);
-        if (saveStatus.contains("User saved successfully")){
-            return new ResponseEntity<>(saveStatus, HttpStatus.CREATED);
-        }else {
-            return new ResponseEntity<>(saveStatus, HttpStatus.INTERNAL_SERVER_ERROR);
+            userService.saveUser(buildUserDto);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (DataPersistFailedException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable ("userId") String userId){
-        return userService.deleteUser(userId) ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Void> deleteUser(@PathVariable ("userId") String userId){
+        try{
+            userService.deleteUser(userId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (UserNotFoundException e) {
+            throw new RuntimeException(e);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
