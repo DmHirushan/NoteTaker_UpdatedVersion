@@ -52,9 +52,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(String userId) {
-        Optional <UserEntity> selectedUserId = userDao.findById(userId);
+        Optional <UserEntity> selectedUser = userDao.findById(userId);
 
-        if (!selectedUserId.isPresent()){
+        if (!selectedUser.isPresent()){
             throw new UserNotFoundException("User Not Found!");
         }else {
             userDao.deleteById(userId);
