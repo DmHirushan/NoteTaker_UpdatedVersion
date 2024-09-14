@@ -60,7 +60,7 @@ public class UserController {
             userService.deleteUser(userId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (UserNotFoundException e) {
-            throw new RuntimeException(e);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

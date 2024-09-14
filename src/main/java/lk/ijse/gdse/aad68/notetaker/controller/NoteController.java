@@ -64,8 +64,15 @@ public class NoteController {
 
 
     @DeleteMapping(value ="/{noteId}" )
-    public ResponseEntity<String> deleteNote(@PathVariable ("noteId") String noteId) {
-       return noteService.deleteNote(noteId) ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.BAD_REQUEST); // standard ekak widiyt api delete operation ekakadi message ekak ywanne na front end ekata..
+    public ResponseEntity<Void> deleteNote(@PathVariable ("noteId") String noteId) {
+        try{
+            noteService.deleteNote(noteId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }catch (NoteNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
 
