@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -32,17 +33,18 @@ public class UserController {
                                            @RequestPart("lastName") String lastName,
                                            @RequestPart("email") String email,
                                            @RequestPart("password") String password,
-                                           @RequestPart("profilePic") String profilePic){
+                                           @RequestPart("profilePic") MultipartFile profilePic){
 
         try{
         //Handle profile pic
-        String base64ProfilePic = AppUtil.toBase64ProfilePic(profilePic);
-        var buildUserDto = new UserDto();
-        buildUserDto.setFirstName(firstName);
-        buildUserDto.setLastName(lastName);
-        buildUserDto.setEmail(email);
-        buildUserDto.setPassword(password);
-        buildUserDto.setProfilePic(base64ProfilePic);
+            byte[] imageByteCollection = profilePic.getBytes();
+            String base64ProfilePic = AppUtil.toBase64ProfilePic(imageByteCollection);
+            var buildUserDto = new UserDto();
+            buildUserDto.setFirstName(firstName);
+            buildUserDto.setLastName(lastName);
+            buildUserDto.setEmail(email);
+            buildUserDto.setPassword(password);
+            buildUserDto.setProfilePic(base64ProfilePic);
 
             userService.saveUser(buildUserDto);
             return new ResponseEntity<>(HttpStatus.CREATED);
@@ -76,33 +78,33 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @PatchMapping(value = "/{userId}", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> updateUser(@PathVariable ("userId") String userId,
-                                             @RequestPart("firstName") String updateFirstName,
-                                             @RequestPart("lastName") String updateLastName,
-                                             @RequestPart("email") String updateEmail,
-                                             @RequestPart("password") String updatePassword,
-                                             @RequestPart("profilePic") String updateProfilePic
-                                             ){
-
-        try {
-            String updateBase64ProfilePic = AppUtil.toBase64ProfilePic(updateProfilePic);
-            var updateUser = new UserDto();
-            updateUser.setUserId(userId);
-            updateUser.setEmail(updateEmail);
-            updateUser.setFirstName(updateFirstName);
-            updateUser.setLastName(updateLastName);
-            updateUser.setPassword(updatePassword);
-            updateUser.setProfilePic(updateBase64ProfilePic);
-
-            userService.updateUser(updateUser);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }catch (UserNotFoundException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-    }
+//    @PatchMapping(value = "/{userId}", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public ResponseEntity<Void> updateUser(@PathVariable ("userId") String userId,
+//                                             @RequestPart("firstName") String updateFirstName,
+//                                             @RequestPart("lastName") String updateLastName,
+//                                             @RequestPart("email") String updateEmail,
+//                                             @RequestPart("password") String updatePassword,
+//                                             @RequestPart("profilePic") String updateProfilePic
+//                                             ){
+//
+//        try {
+//            String updateBase64ProfilePic = AppUtil.toBase64ProfilePic(updateProfilePic);
+//            var updateUser = new UserDto();
+//            updateUser.setUserId(userId);
+//            updateUser.setEmail(updateEmail);
+//            updateUser.setFirstName(updateFirstName);
+//            updateUser.setLastName(updateLastName);
+//            updateUser.setPassword(updatePassword);
+//            updateUser.setProfilePic(updateBase64ProfilePic);
+//
+//            userService.updateUser(updateUser);
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }catch (UserNotFoundException e){
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }catch (Exception e){
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//
+//    }
 
 }
