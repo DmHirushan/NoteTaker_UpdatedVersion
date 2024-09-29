@@ -1,5 +1,6 @@
 package lk.ijse.gdse.aad68.notetaker.controller;
 
+import lk.ijse.gdse.aad68.notetaker.customObj.NoteResponse;
 import lk.ijse.gdse.aad68.notetaker.customObj.UserResponse;
 import lk.ijse.gdse.aad68.notetaker.exception.DataPersistFailedException;
 import lk.ijse.gdse.aad68.notetaker.exception.NoteNotFoundException;
@@ -50,7 +51,7 @@ public class NoteController {
 
 
     @GetMapping(value = "/{noteId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserResponse getNote(@PathVariable ("noteId") String noteId)  {
+    public NoteResponse getNote(@PathVariable ("noteId") String noteId)  {
         return noteService.getSelectedNote(noteId);
     }
 

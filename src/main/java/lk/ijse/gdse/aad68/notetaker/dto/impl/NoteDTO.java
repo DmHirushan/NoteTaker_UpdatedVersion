@@ -1,5 +1,6 @@
 package lk.ijse.gdse.aad68.notetaker.dto.impl;
 
+import lk.ijse.gdse.aad68.notetaker.customObj.NoteResponse;
 import lk.ijse.gdse.aad68.notetaker.customObj.UserResponse;
 import lk.ijse.gdse.aad68.notetaker.dto.SuperDto;
 import lombok.AllArgsConstructor;
@@ -10,7 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class NoteDTO implements SuperDto, UserResponse {
+public class NoteDTO implements SuperDto, NoteResponse {
     private String noteId;
     private String noteTitle;
     private String noteDesc;
