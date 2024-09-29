@@ -23,10 +23,10 @@ public class UserController {
     @Autowired
     private final UserService userService;
 
-    @GetMapping("/healthcheck")
-    public String healthCheck(){
-        return "User Controller running!";
-    }
+//    @GetMapping("/healthcheck")
+//    public String healthCheck(){
+//        return "User Controller running!";
+//    }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> saveUser(@RequestPart("firstName") String firstName,

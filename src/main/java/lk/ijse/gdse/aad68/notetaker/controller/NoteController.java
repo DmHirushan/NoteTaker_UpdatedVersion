@@ -21,10 +21,10 @@ public class NoteController {
     @Autowired
     private final NoteService noteService;
 
-    @GetMapping("/healthcheck")
-    public String healthCheck(){
-        return "Note Taker is running!";
-    }
+//    @GetMapping("/healthcheck")
+//    public String healthCheck(){
+//        return "Note Taker is running!";
+//    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createNote(@RequestBody NoteDTO note) {
