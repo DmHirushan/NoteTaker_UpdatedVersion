@@ -63,7 +63,7 @@ public  class NoteServiceIMPL implements NoteService {
         if (noteDao.existsById(noteId)){
             return mapping.convertToDTO(noteDao.getNoteEntitiesByNoteId(noteId));
         }else {
-            return new NoteErrorResponse(1, "Note not found!");
+            return new NoteErrorResponse(0, "Note not found!");
         }
     }
 
