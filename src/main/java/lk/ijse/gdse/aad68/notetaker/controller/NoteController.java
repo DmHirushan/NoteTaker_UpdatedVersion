@@ -28,14 +28,19 @@ public class NoteController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createNote(@RequestBody NoteDTO note) {
-        try{
-            noteService.saveNote(note);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        }catch (DataPersistFailedException e) {
+        if (note == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }else {
+            try{
+                noteService.saveNote(note);
+                return new ResponseEntity<>(HttpStatus.CREATED);
+            }catch (DataPersistFailedException e) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
+
     }
 
     @GetMapping(value = "allnotes", produces = MediaType.APPLICATION_JSON_VALUE)
