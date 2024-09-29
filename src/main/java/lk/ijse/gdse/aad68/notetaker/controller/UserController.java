@@ -78,33 +78,34 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-//    @PatchMapping(value = "/{userId}", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public ResponseEntity<Void> updateUser(@PathVariable ("userId") String userId,
-//                                             @RequestPart("firstName") String updateFirstName,
-//                                             @RequestPart("lastName") String updateLastName,
-//                                             @RequestPart("email") String updateEmail,
-//                                             @RequestPart("password") String updatePassword,
-//                                             @RequestPart("profilePic") String updateProfilePic
-//                                             ){
-//
-//        try {
-//            String updateBase64ProfilePic = AppUtil.toBase64ProfilePic(updateProfilePic);
-//            var updateUser = new UserDto();
-//            updateUser.setUserId(userId);
-//            updateUser.setEmail(updateEmail);
-//            updateUser.setFirstName(updateFirstName);
-//            updateUser.setLastName(updateLastName);
-//            updateUser.setPassword(updatePassword);
-//            updateUser.setProfilePic(updateBase64ProfilePic);
-//
-//            userService.updateUser(updateUser);
-//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        }catch (UserNotFoundException e){
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }catch (Exception e){
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//
-//    }
+    @PatchMapping(value = "/{userId}", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> updateUser(@PathVariable ("userId") String userId,
+                                             @RequestPart("firstName") String updateFirstName,
+                                             @RequestPart("lastName") String updateLastName,
+                                             @RequestPart("email") String updateEmail,
+                                             @RequestPart("password") String updatePassword,
+                                             @RequestPart("profilePic") MultipartFile updateProfilePic
+                                             ){
+
+        try {
+            byte[] updateImageByteCollection = updateProfilePic.getBytes();
+            String updateBase64ProfilePic = AppUtil.toBase64ProfilePic(updateImageByteCollection);
+            var updateUser = new UserDto();
+            updateUser.setUserId(userId);
+            updateUser.setEmail(updateEmail);
+            updateUser.setFirstName(updateFirstName);
+            updateUser.setLastName(updateLastName);
+            updateUser.setPassword(updatePassword);
+            updateUser.setProfilePic(updateBase64ProfilePic);
+
+            userService.updateUser(updateUser);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }catch (UserNotFoundException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
 
 }
